@@ -1,0 +1,173 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /helloworld/{name}:
+        get:
+            tags:
+                - Greeter
+            description: Sends a greeting
+            operationId: Greeter_SayHello
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
+    /v1/homepage:
+        get:
+            tags:
+                - HomePageCollectionService
+            operationId: HomePageCollectionService_GetHomePageCollection
+            parameters:
+                - name: class
+                  in: query
+                  schema:
+                    type: string
+                - name: stream
+                  in: query
+                  schema:
+                    type: string
+                - name: language
+                  in: query
+                  schema:
+                    type: string
+                - name: versionCode
+                  in: query
+                  schema:
+                    type: string
+                - name: source
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.collection.v1.HomePageCollectionResponse'
+    /v1/ncertbooks:
+        get:
+            tags:
+                - Collection
+            description: |-
+                rpc CreateCollection (CreateCollectionRequest) returns (CreateCollectionReply);
+                	rpc UpdateCollection (UpdateCollectionRequest) returns (UpdateCollectionReply);
+                	rpc DeleteCollection (DeleteCollectionRequest) returns (DeleteCollectionReply);
+                	rpc GetCollection (GetCollectionRequest) returns (GetCollectionReply);
+                	rpc ListCollection (ListCollectionRequest) returns (ListCollectionReply);
+            operationId: Collection_ListNcertBooks
+            parameters:
+                - name: class
+                  in: query
+                  schema:
+                    type: string
+                - name: subject
+                  in: query
+                  schema:
+                    type: string
+                - name: language
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.collection.v1.ListNcertBooksResponse'
+components:
+    schemas:
+        api.collection.v1.Content:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                name:
+                    type: string
+                description:
+                    type: string
+                isAdminCreated:
+                    type: boolean
+                imageUrl:
+                    type: string
+            description: Message for content details within a collection
+        api.collection.v1.HomePageCollection:
+            type: object
+            properties:
+                widgetType:
+                    type: string
+                contents:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.collection.v1.Content'
+            description: Message for individual homepage collection
+        api.collection.v1.HomePageCollectionResponse:
+            type: object
+            properties:
+                collections:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.collection.v1.HomePageCollection'
+            description: Response message for homepage collection
+        api.collection.v1.ListNcertBooksResponse:
+            type: object
+            properties:
+                collectionType:
+                    type: string
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.collection.v1.NcertBook'
+                mongoItems:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.collection.v1.MongoItem'
+        api.collection.v1.MongoItem:
+            type: object
+            properties:
+                solution:
+                    type: string
+                studentId:
+                    type: string
+                answerId:
+                    type: string
+                questionId:
+                    type: string
+        api.collection.v1.NcertBook:
+            type: object
+            properties:
+                title:
+                    type: string
+                imageUrl:
+                    type: string
+                deeplink:
+                    type: string
+                subtitle:
+                    type: string
+        helloworld.v1.HelloReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: The response message containing the greetings
+tags:
+    - name: Collection
+    - name: Greeter
+      description: The greeting service definition.
+    - name: HomePageCollectionService
+      description: create service component

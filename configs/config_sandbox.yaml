@@ -1,0 +1,24 @@
+server:
+  http:
+    addr: 0.0.0.0:8001
+    timeout: 10000s
+  grpc:
+    addr: 0.0.0.0:9001
+    timeout: 100000s
+data:
+  database:
+    driver: mysql
+    source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
+  mongo:
+    cred_file_location: /Users/shivansh_mani/Desktop/collectionview-service/configs/mongo_db_credentials.log
+    connection: mongodb://127.0.0.1:27017
+    timeout: 6000
+redis:
+  addr: clustercfg.sandbox-user-management.sfaj1j.aps1.cache.amazonaws.com:6379
+  read_time_out_in_ms: 2000
+  write_time_out_in_ms: 2000
+  dial_time_out_in_ms: 2000
+  pool_size: 10
+  tls: true
+  cred_file_location: /Users/shivansh_mani/Desktop/collectionview-service/configs/redis_db_credentials.log
+

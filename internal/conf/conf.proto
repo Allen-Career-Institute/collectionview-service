@@ -1,0 +1,58 @@
+syntax = "proto3";
+package kratos.api;
+
+option go_package = "collectionview-service/internal/conf;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  Server server = 1;
+  Data data = 2;
+  Redis redis = 3;
+}
+
+message Server {
+  message HTTP {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  HTTP http = 1;
+  GRPC grpc = 2;
+}
+
+message Redis {
+  string network = 1;
+  string addr = 2;
+  int32 read_time_out_in_ms = 3;
+  int32 write_time_out_in_ms = 4;
+  int32 dial_time_out_in_ms = 5;
+  int32 pool_size = 6;
+  string cred_file_location = 7;
+  bool tls = 8;
+}
+
+message Data {
+  message Mongo {
+    string connection = 1;
+    int64 timeout = 2;
+    string cred_file_location = 3;
+  }
+
+//  message Redis {
+//    string network = 1;
+//    string addr = 2;
+//    google.protobuf.Duration read_timeout = 3;
+//    google.protobuf.Duration write_timeout = 4;
+//  }
+
+  Mongo mongo = 1;
+  //Redis redis = 2;
+}
+
+
