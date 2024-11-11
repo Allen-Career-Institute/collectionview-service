@@ -1,13 +1,10 @@
 package main
 
 import (
+	"collectionview-service/internal/conf"
 	"collectionview-service/internal/utils"
 	"flag"
 	"fmt"
-	"os"
-
-	"collectionview-service/internal/conf"
-
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -15,8 +12,8 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-
 	_ "go.uber.org/automaxprocs"
+	"os"
 )
 
 const (
@@ -121,6 +118,5 @@ func getConfigPath() string {
 	default:
 		log.Infof("using local config : %s", configFile)
 	}
-	//fmt.Println("configFile ::", configFile)
 	return configFile
 }
