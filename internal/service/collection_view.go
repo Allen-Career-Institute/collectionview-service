@@ -5,7 +5,6 @@ import (
 	"collectionview-service/internal/mongo"
 	"collectionview-service/internal/utils"
 	"context"
-	"encoding/json"
 	"fmt"
 	v1 "github.com/Allen-Career-Institute/common-protos/collection_view/v1"
 	pbrq "github.com/Allen-Career-Institute/common-protos/collection_view/v1/request"
@@ -40,18 +39,18 @@ func CreateCacheKey(req *pbrq.CollectionViewRequest) string {
 
 // ListNcertBooks implements the ListNcertBooks method.
 func (s *ContentViewService) GetCollectionView(ctx context.Context, req *pbrq.CollectionViewRequest) (*pbrs.CollectionViewResponse, error) {
-	filter := bson.D{{"collection_id", req.CollectionId}}
-
-	cacheKey := CreateCacheKey(req)
+	filter := bson.D{{"_id", req.CollectionId}}
+	fmt.Println(filter, "filter")
+	//cacheKey := CreateCacheKey(req)
 	//Try to get the cached response
-	cachedResponse, err := s.cacheCollection.Get(ctx, cacheKey)
-	if err == nil {
-		var response pbrs.CollectionViewResponse
-		err = json.Unmarshal([]byte(cachedResponse), &response)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal cached response: %v", err)
-		}
-	}
+	//cachedResponse, err := s.cacheCollection.Get(ctx, cacheKey)
+	//if err == nil {
+	//	var response pbrs.CollectionViewResponse
+	//	err = json.Unmarshal([]byte(cachedResponse), &response)
+	//	if err != nil {
+	//		return nil, fmt.Errorf("failed to unmarshal cached response: %v", err)
+	//	}
+	//}
 	cursor, err := s.mongoCollection.List(ctx, filter, utils.Databasename, utils.LibCollection)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list from mongo collection: %w", err)
@@ -84,17 +83,17 @@ func (s *ContentViewService) GetCollectionView(ctx context.Context, req *pbrq.Co
 		Collections: results,
 	}
 
-	responseJSON, err := json.Marshal(response)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal response to JSON: %v", err)
-	}
-	//
-	//// Define TTL for cache
-	ttl := utils.TTL
+	//responseJSON, err := json.Marshal(response)
+	//if err != nil {
+	//	return nil, fmt.Errorf("failed to marshal response to JSON: %v", err)
+	//}
+	////
+	////// Define TTL for cache
+	//ttl := utils.TTL
 
-	if err = s.cacheCollection.Set(ctx, cacheKey, string(responseJSON), ttl); err != nil {
-		return nil, fmt.Errorf("failed to set response in cache: %w", err)
-	}
+	//if err = s.cacheCollection.Set(ctx, cacheKey, string(responseJSON), ttl); err != nil {
+	//	return nil, fmt.Errorf("failed to set response in cache: %w", err)
+	//}
 
 	//}
 	return response, nil

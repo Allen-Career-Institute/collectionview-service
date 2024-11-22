@@ -1,13 +1,10 @@
 package main
 
 import (
+	"collectionview-service/internal/conf"
 	"collectionview-service/internal/utils"
 	"flag"
 	"fmt"
-	"os"
-
-	"collectionview-service/internal/conf"
-
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -15,8 +12,8 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-
 	_ "go.uber.org/automaxprocs"
+	"os"
 )
 
 const (
@@ -25,7 +22,7 @@ const (
 	StageEnv      = "stage"
 	ProdEnv       = "prod"
 	DockerConfDir = "/app/data/conf/"
-	LocalConfDir  = "/Users/shivansh_mani/Desktop/collectionview-service/configs/"
+	LocalConfDir  = "/home/shivansh/collectionview-service/configs/"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -121,6 +118,5 @@ func getConfigPath() string {
 	default:
 		log.Infof("using local config : %s", configFile)
 	}
-	//fmt.Println("configFile ::", configFile)
 	return configFile
 }

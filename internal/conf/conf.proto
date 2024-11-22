@@ -43,16 +43,7 @@ message Data {
     int64 timeout = 2;
     string cred_file_location = 3;
   }
-
-//  message Redis {
-//    string network = 1;
-//    string addr = 2;
-//    google.protobuf.Duration read_timeout = 3;
-//    google.protobuf.Duration write_timeout = 4;
-//  }
-
   Mongo mongo = 1;
-  //Redis redis = 2;
 }
 
 
