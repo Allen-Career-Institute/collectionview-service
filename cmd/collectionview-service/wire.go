@@ -6,7 +6,7 @@
 package main
 
 import (
-	"collectionview-service/internal/cache"
+	"collectionview-service/internal/biz"
 	"collectionview-service/internal/conf"
 	"collectionview-service/internal/mongo"
 	"collectionview-service/internal/server"
@@ -18,5 +18,5 @@ import (
 
 // wireApp init kratos application.
 func wireApp(*conf.Server, *conf.Data, log.Logger, *conf.Redis) (*kratos.App, func(), error) {
-	panic(wire.Build(server.ProviderSet, mongo.ProviderSet, cache.ProviderSet, service.ProviderSet, newApp))
+	panic(wire.Build(server.ProviderSet, mongo.ProviderSet, biz.ProviderSet, service.ProviderSet, newApp))
 }

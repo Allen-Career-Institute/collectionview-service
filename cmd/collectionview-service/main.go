@@ -25,7 +25,7 @@ const (
 	StageEnv      = "stage"
 	ProdEnv       = "prod"
 	DockerConfDir = "/app/data/conf/"
-	LocalConfDir  = "/Users/shivansh_mani/Desktop/collectionview-service/configs/"
+	LocalConfDir  = "collectionview-service/configs/"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -101,7 +101,6 @@ func main() {
 
 func getConfigPath() string {
 	env := os.Getenv("ENV")
-	//env = SandboxEnv
 	log.Infof("using env  : " + env)
 
 	configFile := flagconf
@@ -121,6 +120,5 @@ func getConfigPath() string {
 	default:
 		log.Infof("using local config : %s", configFile)
 	}
-	//fmt.Println("configFile ::", configFile)
 	return configFile
 }
