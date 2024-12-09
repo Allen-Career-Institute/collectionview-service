@@ -10,7 +10,7 @@ data:
     driver: mysql
     source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
   mongo:
-    cred_file_location: /Users/shivansh_mani/Desktop/collectionview-service/configs/mongo_db_credentials.log
+    cred_file_location: /collectionview-service/configs/mongo_db_credentials.log
     connection: mongodb://127.0.0.1:27017
     timeout: 6000
 redis:
@@ -20,5 +20,5 @@ redis:
   dial_time_out_in_ms: 2000
   pool_size: 10
   tls: true
-  cred_file_location: /Users/shivansh_mani/Desktop/collectionview-service/configs/redis_db_credentials.log
+  cred_file_location: /collectionview-service/configs/redis_db_credentials.log
 
