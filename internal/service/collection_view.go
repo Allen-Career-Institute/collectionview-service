@@ -35,7 +35,7 @@ func NewContentViewService(bizHandler *biz.CollectionBizHandler, mongoCollection
 }
 
 func (s *ContentViewService) GetCollectionView(ctx context.Context, req *pbrq.CollectionViewRequest) (*pbrs.CollectionViewResponse, error) {
-	filter := bson.D{{"collection_id", req.CollectionId}}
+	filter := bson.D{{utils.ID, req.CollectionId}}
 	cursor, err := s.mongoCollection.List(ctx, filter, utils.Databasename, utils.LibCollection)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list from mongo collection: %w", err)
