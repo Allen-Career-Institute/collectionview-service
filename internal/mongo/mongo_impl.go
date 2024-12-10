@@ -2,16 +2,11 @@ package mongo
 
 import (
 	"context"
-	//"fmt"
-	// "go.mongodb.org/mongo-driver/mongo/options"
-	"time"
-
-	//"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
-	//"go.mongodb.org/mongo-driver/bson"
-
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 )
 
 const (
@@ -23,7 +18,7 @@ type mongoCollectionImpl struct {
 	log    *log.Helper
 }
 
-func (q mongoCollectionImpl) Get(ctx context.Context, filter interface{}, dbName, collectionName string) (*mongo.SingleResult, error) {
+func (q *mongoCollectionImpl) Get(ctx context.Context, filter interface{}, dbName, collectionName string) (*mongo.SingleResult, error) {
 	// Start a new session for the transaction
 	q.log.WithContext(ctx).Debugf(START_TIME_LOG, time.Now())
 	session, err := q.client.StartSession()
@@ -54,20 +49,10 @@ func (q mongoCollectionImpl) Get(ctx context.Context, filter interface{}, dbName
 	return result, nil
 }
 
-func (q mongoCollectionImpl) List(ctx context.Context, filter interface{}, dbName, collectionName string, opts ...*options.FindOptions) (*mongo.Cursor, error) {
-	// Start a new session for the transaction
+func (q *mongoCollectionImpl) List(ctx context.Context, filter interface{}, dbName, collectionName string, opts ...*options.FindOptions) (*mongo.Cursor, error) {
+	// Log the start time of the query
 	q.log.WithContext(ctx).Debugf(START_TIME_LOG, time.Now())
-	session, err := q.client.StartSession()
-	if err != nil {
-		return nil, err
-	}
-	defer session.EndSession(ctx)
 
-	// Start the transaction
-	err = session.StartTransaction()
-	if err != nil {
-		return nil, err
-	}
 	// Get a handle to the database and collection
 	db := q.client.Database(dbName)
 	collection := db.Collection(collectionName)
@@ -75,18 +60,38 @@ func (q mongoCollectionImpl) List(ctx context.Context, filter interface{}, dbNam
 	// Query the collection
 	cursor, err := collection.Find(ctx, filter, opts...)
 	if err != nil {
-		// Abort the transaction in case of an error
-		err = session.AbortTransaction(ctx)
-		if err != nil {
-			return nil, err
-		}
+		q.log.WithContext(ctx).Errorf("Error during query execution: %v", err)
 		return nil, err
 	}
 
+	// Check for any cursor errors
 	if err = cursor.Err(); err != nil {
-		q.log.WithContext(ctx).Errorf("Error during cursor iteration = %v", err)
+		q.log.WithContext(ctx).Errorf("Error during cursor iteration: %v", err)
 	}
+
 	return cursor, err
+}
+
+func (lr *mongoCollectionImpl) InsertDocument(ctx context.Context, dbName, collectionName string, documents interface{}) (interface{}, error) {
+	db := lr.client.Database(dbName)
+	collection := db.Collection(collectionName)
+
+	data, err := collection.InsertOne(ctx, documents)
+	if err != nil {
+		return nil, err
+	}
+
+	return data.InsertedID, nil
+}
+
+func (lr *mongoCollectionImpl) UpdateOne(ctx context.Context, dbName, collectionName string, filter, updateData interface{}) error {
+	db := lr.client.Database(dbName)
+	collection := db.Collection(collectionName)
+
+	update := bson.M{"$set": updateData}
+	_, err := collection.UpdateOne(ctx, filter, update)
+
+	return err
 }
 
 func NewMongoCollectionImpl(data *Data, logger *log.Helper) MongoCollectionInterface {

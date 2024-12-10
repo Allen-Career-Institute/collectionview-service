@@ -1,13 +1,12 @@
 package mongo
 
 import (
+	"collectionview-service/internal/conf"
+	"collectionview-service/internal/utils"
 	"context"
 	"encoding/json"
 	"fmt"
 	"os"
-
-	"collectionview-service/internal/conf"
-	"collectionview-service/internal/utils"
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
@@ -46,10 +45,6 @@ func NewData(c *conf.Data, log *log.Helper) (*Data, error) {
 		return nil, err
 	}
 	log.Info("Started connecting with mongo server")
-	//credential := options.Credential{
-	//	Username: credentials.Username,
-	//	Password: credentials.Password,
-	//}
 	ctx := context.TODO()
 	clientOptions := options.Client().SetMonitor(otelmongo.NewMonitor()).ApplyURI(c.Mongo.GetConnection()) //.SetAuth(credential)
 	client, err := mongo.Connect(ctx, clientOptions)
