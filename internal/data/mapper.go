@@ -8,14 +8,8 @@ import (
 func MouldReq(req *pbrq.CreateCollectionViewRequest, prefix string) *CollectionViewEntity {
 	var collectionview CollectionViewEntity
 	collectionview.CollectionId = prefix
-	collectionview.CreatedAt = req.CreatedAt
-	if req.CreatedAt == 0 {
-		collectionview.CreatedAt = time.Now().Unix()
-	}
-	if req.UpdatedAt == 0 {
-		collectionview.UpdatedAt = time.Now().Unix()
-	}
-	collectionview.UpdatedAt = req.UpdatedAt
+	collectionview.CreatedAt = time.Now().Unix()
+	collectionview.UpdatedAt = time.Now().Unix()
 	collectionview.ViewType = req.ViewType
 	collectionview.ViewDepth = req.ViewDepth
 
