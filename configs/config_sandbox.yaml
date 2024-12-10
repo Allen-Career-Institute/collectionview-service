@@ -1,24 +1,20 @@
 server:
   http:
-    addr: 0.0.0.0:8001
+    addr: 0.0.0.0:8008
     timeout: 10000s
   grpc:
-    addr: 0.0.0.0:9001
+    addr: 0.0.0.0:9009
     timeout: 100000s
 data:
-  database:
-    driver: mysql
-    source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
   mongo:
-    cred_file_location: /collectionview-service/configs/mongo_db_credentials.log
-    connection: mongodb://127.0.0.1:27017
-    timeout: 6000
-redis:
-  addr: clustercfg.sandbox-user-management.sfaj1j.aps1.cache.amazonaws.com:6379
-  read_time_out_in_ms: 2000
-  write_time_out_in_ms: 2000
-  dial_time_out_in_ms: 2000
-  pool_size: 10
-  tls: true
-  cred_file_location: /collectionview-service/configs/redis_db_credentials.log
+    source: mongodb+srv://allen-staging-staging-cluster-pl-0.xklzc.mongodb.net
+    db_name: collectionview-service
+    max_pool_size: 20
+    min_pool_size: 5
+    max_conn_idle_time: 30
+    timeout: 60
+    is_connection_pool_enabled: true
+    cred_file_location: /mnt/secrets-store/mongo_db_credentials
+    cred_file_type: json
+
 
