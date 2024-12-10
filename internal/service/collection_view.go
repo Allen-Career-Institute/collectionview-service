@@ -71,7 +71,7 @@ func (s *ContentViewService) GetCollectionView(ctx context.Context, req *pbrq.Co
 	return response, nil
 }
 
-func (s *ContentViewService) CreateCollection(ctx context.Context, req *pbrq.CreateCollectionViewRequest) (*pbrs.CreateCollectionViewResponse, error) {
+func (s *ContentViewService) CreateCollectionView(ctx context.Context, req *pbrq.CreateCollectionViewRequest) (*pbrs.CreateCollectionViewResponse, error) {
 	if err := req.ValidateAll(); err != nil {
 		return nil, errors.New(http.StatusBadRequest, utils.InvalidRequestReason, utils.InvalidRequestMessage).WithMetadata(utils.GetErrorMetaData(err))
 	}
@@ -89,7 +89,7 @@ func (s *ContentViewService) CreateCollection(ctx context.Context, req *pbrq.Cre
 	}, nil
 }
 
-func (s *ContentViewService) UpdateCollection(ctx context.Context, req *pbrq.UpdateCollectionViewRequest) (*pbrs.UpdateCollectionViewResponse, error) {
+func (s *ContentViewService) UpdateCollectionView(ctx context.Context, req *pbrq.UpdateCollectionViewRequest) (*pbrs.UpdateCollectionViewResponse, error) {
 	if err := req.ValidateAll(); err != nil {
 		return nil, errors.New(http.StatusBadRequest, utils.InvalidRequestReason, utils.InvalidRequestMessage).WithMetadata(utils.GetErrorMetaData(err))
 	}
