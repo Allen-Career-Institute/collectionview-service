@@ -76,7 +76,7 @@ func (s *ContentViewService) CreateCollectionView(ctx context.Context, req *pbrq
 		return nil, errors.New(http.StatusBadRequest, utils.InvalidRequestReason, utils.InvalidRequestMessage).WithMetadata(utils.GetErrorMetaData(err))
 	}
 
-	collectionID := utils.GenerateID(utils.LibraryPrefix)
+	collectionID := req.CollectionId
 	err := s.bizHandler.CreateCollection(ctx, req, collectionID)
 
 	if err != nil {
