@@ -1,9 +1,9 @@
 server:
   http:
-    addr: 0.0.0.0:8008
+    addr: 0.0.0.0:8000
     timeout: 10000s
   grpc:
-    addr: 0.0.0.0:9009
+    addr: 0.0.0.0:9000
     timeout: 100000s
 data:
   mongo:
