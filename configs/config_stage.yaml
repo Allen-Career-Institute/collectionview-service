@@ -1,10 +1,15 @@
 server:
   http:
     addr: 0.0.0.0:8000
-    timeout: 10000s
+    timeout: 30s
   grpc:
     addr: 0.0.0.0:9000
-    timeout: 100000s
+    timeout: 30s
+    # unit is seconds: 30 seconds
+    max_idle_connection: 30
+    # unit is seconds: 120 seconds
+    max_connection_age: 120
+    shared_write_buffer: true
 data:
   mongo:
     connection: mongodb+srv://allen-staging-staging-cluster-pl-0.xklzc.mongodb.net
