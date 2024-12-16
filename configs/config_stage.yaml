@@ -1,0 +1,21 @@
+server:
+  http:
+    addr: 0.0.0.0:8008
+    timeout: 10000s
+  grpc:
+    addr: 0.0.0.0:9009
+    timeout: 100000s
+data:
+  mongo:
+    source: mongodb+srv://allen-staging-staging-cluster-pl-0.xklzc.mongodb.net
+    db_name: collectionview_db
+    max_pool_size: 20
+    min_pool_size: 5
+    max_conn_idle_time: 30
+    timeout: 60
+    is_connection_pool_enabled: true
+    cred_file_location: /mnt/secrets-store/mongo_db_credentials
+    cred_file_type: json
+
+
+
