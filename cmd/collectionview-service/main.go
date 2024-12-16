@@ -24,7 +24,7 @@ const (
 	DevEnv        = "dev"
 	StageEnv      = "stage"
 	ProdEnv       = "prod"
-	DockerConfDir = "../../configs/"
+	DockerConfDir = "/src/configs/"
 	LocalConfDir  = "/Users/shivanshmani/Desktop/allen/collectionview-service/configs/"
 )
 
