@@ -1,4 +1,8 @@
-FROM golang:1.19 AS builder
+FROM 537984406465.dkr.ecr.ap-south-1.amazonaws.com/golang:1.22.7 AS builder
+
+ARG GIT_TOKEN
+ENV GOPRIVATE=github.com/Allen-Career-Institute/*
+ENV GOSUMDB=off
 
 COPY . /src
 WORKDIR /src
