@@ -2,8 +2,6 @@ module collectionview-service
 
 go 1.21
 
-toolchain go1.22.1
-
 require (
 	github.com/Allen-Career-Institute/common-protos v1.12.96
 	github.com/go-kratos/kratos/v2 v2.8.2
