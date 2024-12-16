@@ -4,6 +4,7 @@ import (
 	"collectionview-service/internal/utils"
 	"flag"
 	"fmt"
+	"github.com/Allen-Career-Institute/go-kratos-commons/health"
 	"os"
 
 	"collectionview-service/internal/conf"
@@ -47,6 +48,9 @@ func init() {
 }
 
 func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
+	handler := health.NewHandler()
+	hs.Handle("/health", handler)
+
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
