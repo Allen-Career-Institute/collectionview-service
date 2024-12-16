@@ -24,8 +24,8 @@ const (
 	DevEnv        = "dev"
 	StageEnv      = "stage"
 	ProdEnv       = "prod"
-	DockerConfDir = "/app/data/conf/"
-	LocalConfDir  = "collectionview-service/configs/"
+	DockerConfDir = "../../configs/"
+	LocalConfDir  = "/Users/shivanshmani/Desktop/allen/collectionview-service/configs/"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
