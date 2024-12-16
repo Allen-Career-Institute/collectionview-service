@@ -1,0 +1,26 @@
+
+# =====================================================
+#   Standard properties
+# =====================================================
+
+sonar.organization=default
+sonar.projectKey=learning-material-management
+
+sonar.sources=.
+sonar.exclusions=**/.github/**,**/mock_*.go,**/cmd/**,**/mocks/**,**/server/**,**/*aws-template.yml,**/*mock*.go,**/tests/**,**/*_test.go,***/*_test_data.go,.yml,*.yaml,*.proto,Dockerfile,*.md,*.yaml,**/*.pb.go,**/*.pb.*.go,*.mod,*.json,*.out,Makefile,LICENSE,.gitignore,main.go
+
+
+sonar.tests=.
+sonar.test.inclusions=**/*_test*.go
+
+# =====================================================
+#   Meta-data for the project
+# =====================================================
+
+
+# =====================================================
+#   Properties specific to Go
+# =====================================================
+
+sonar.go.tests.reportPaths=coverage.out
+sonar.go.coverage.reportPaths=sonar_coverage.out
