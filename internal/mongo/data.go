@@ -44,9 +44,14 @@ func NewData(c *conf.Data, log *log.Helper) (*Data, error) {
 		err := errors.New(500, utils.MongoErrorTag, "Error fetching mongo credentials")
 		return nil, err
 	}
+	credential := options.Credential{
+		Username: credentials.Username,
+		Password: credentials.Password,
+	}
 	log.Info("Started connecting with mongo server")
 	ctx := context.TODO()
-	clientOptions := options.Client().SetMonitor(otelmongo.NewMonitor()).ApplyURI(c.Mongo.GetConnection()) //.SetAuth(credential)
+	//options.Client().ApplyURI(c.Mongo.GetConnection()).SetAuth(credential).SetMonitor(otelmongo.NewMonitor())
+	clientOptions := options.Client().ApplyURI(c.Mongo.GetConnection()).SetAuth(credential).SetMonitor(otelmongo.NewMonitor())
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Errorf("Error while connecting to mongo db")
