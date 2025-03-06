@@ -116,9 +116,8 @@ func (s *ContentViewService) UpdateCollectionView(ctx context.Context, req *pbrq
 
 type ReelData struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	TopicID   string             `bson:"topic"`
-	SubjectID string             `bson:"subject"`
-	UserID    string             `bson:"userID"`
+	TopicId   string             `bson:"topicId"`
+	SubjectId string             `bson:"subjectId"`
 	VideoID   string             `bson:"videoID"`
 	URL       string             `bson:"url"`
 	Title     string             `bson:"title"`
@@ -141,7 +140,7 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 	}
 	fmt.Println("watchedReels", watchedReels)
 	// 2. Fetch unwatched videos by Topic
-	topicFilter := bson.M{"topicID": req.TopicId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
+	topicFilter := bson.M{"topicId": req.TopicId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
 	topicVideos, err := s.fetchVideos(ctx, topicFilter, 30)
 	if err != nil {
 		return nil, err
@@ -153,7 +152,7 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 
 	// 3. Fallback to Subject filter if not enough
 	if len(allVideos) < requiredCount {
-		subjectFilter := bson.M{"subjectID": req.SubjectId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
+		subjectFilter := bson.M{"subjectId": req.SubjectId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
 		subjectVideos, err := s.fetchVideos(ctx, subjectFilter, 30)
 		if err != nil {
 			return nil, err
@@ -213,12 +212,12 @@ func (s *ContentViewService) prepareResponse(ctx context.Context, videos []ReelD
 	}
 	for i, video := range videos {
 		response.Reels[i] = &pbrs.ReelData{
-			Id:       video.VideoID,
-			Url:      video.URL,
-			Title:    video.Title,
-			Subtitle: video.Subtitle,
-			SubjectId: video.SubjectID,
-			TopicId:   video.TopicID,
+			Id:        video.VideoID,
+			Url:       video.URL,
+			Title:     video.Title,
+			Subtitle:  video.Subtitle,
+			SubjectId: video.SubjectId,
+			TopicId:   video.TopicId,
 		}
 		watchedReels[video.VideoID] = struct{}{}
 	}
