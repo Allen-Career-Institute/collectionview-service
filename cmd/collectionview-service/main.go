@@ -90,7 +90,6 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
-
 	app, cleanup, err := wireApp(bc.Server, bc.Data, logger, bc.Redis)
 	if err != nil {
 		panic(err)
@@ -116,7 +115,7 @@ func getConfigPath() string {
 		configFile = utils.JoinStrings(DockerConfDir, "config_dev.yaml")
 		log.Infof("using dev config")
 	case StageEnv:
-		configFile = utils.JoinStrings(DockerConfDir, "config_stage.yaml")
+		configFile = utils.JoinStrings(LocalConfDir, "config_stage.yaml")
 		log.Infof("using stage config")
 	case ProdEnv:
 		configFile = utils.JoinStrings(DockerConfDir, "config_prod.yaml")

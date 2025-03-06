@@ -6,20 +6,12 @@ server:
     addr: 0.0.0.0:9001
     timeout: 100000s
 data:
-  database:
-    driver: mysql
-    source: root:root@tcp(127.0.0.1:3306)/test?parseTime=True&loc=Local
   mongo:
-    cred_file_location: /collectionview-service/configs/mongo_db_credentials.log
-    connection: mongodb://root:N%3AakESjF%2Fm%2C3@10.1.54.42:27017/?authMechanism=SCRAM-SHA-1&directConnection=true
+    cred_file_location: /Users/shivanshmani/Desktop/allen/collectionview-service/configs/mongo_db_credentials.log
+    #connection: mongodb://root:N%3AakESjF%2Fm%2C3@10.1.54.42:27017/?authMechanism=SCRAM-SHA-1&directConnection=true
     timeout: 6000
-
+    connection: mongodb://localhost:27017
 redis:
-  addr: clustercfg.sandbox-user-management.sfaj1j.aps1.cache.amazonaws.com:6379
-  read_time_out_in_ms: 2000
-  write_time_out_in_ms: 2000
-  dial_time_out_in_ms: 2000
-  pool_size: 10
-  tls: true
-  cred_file_location: /collectionview-service/configs/mongo_db_credentials.log
-
+    addr: localhost:6379
+    timeout: 6000
+    cred_file_location: /Users/shivanshmani/Desktop/allen/collectionview-service/configs/redis_db_credentials.log
