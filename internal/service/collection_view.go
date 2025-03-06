@@ -116,9 +116,8 @@ func (s *ContentViewService) UpdateCollectionView(ctx context.Context, req *pbrq
 
 type ReelData struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	TopicID   string             `bson:"topic"`
-	SubjectID string             `bson:"subject"`
-	UserID    string             `bson:"userID"`
+	TopicId   string             `bson:"topicId"`
+	SubjectId string             `bson:"subjectId"`
 	VideoID   string             `bson:"videoID"`
 	URL       string             `bson:"url"`
 	Title     string             `bson:"title"`
@@ -217,8 +216,8 @@ func (s *ContentViewService) prepareResponse(ctx context.Context, videos []ReelD
 			Url:       video.URL,
 			Title:     video.Title,
 			Subtitle:  video.Subtitle,
-			SubjectId: video.SubjectID,
-			TopicId:   video.TopicID,
+			SubjectId: video.SubjectId,
+			TopicId:   video.TopicId,
 		}
 		watchedReels[video.VideoID] = struct{}{}
 	}
