@@ -5,7 +5,7 @@ go 1.22.7
 toolchain go1.23.3
 
 require (
-	github.com/Allen-Career-Institute/common-protos v1.12.138
+	github.com/Allen-Career-Institute/common-protos v1.15.43
 	github.com/Allen-Career-Institute/go-kratos-commons v1.3.0
 	github.com/go-kratos/kratos/v2 v2.8.3
 	github.com/go-redis/redismock/v9 v9.2.0
@@ -70,4 +70,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Allen-Career-Institute/common-protos v1.12.138 => /Users/shivanshmani/Desktop/allen/common-protos
+// replace github.com/Allen-Career-Institute/common-protos v1.12.138 => /Users/akshatjain/go/src/github.com/Allen-Career-Institute/common-protos
