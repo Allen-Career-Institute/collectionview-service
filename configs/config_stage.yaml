@@ -19,7 +19,7 @@ data:
     max_conn_idle_time: 30
     timeout: 6000
     is_connection_pool_enabled: true
-    cred_file_location: /mnt/secrets-store/mongo_db_creds
+    cred_file_location: /mnt/secrets-store/mongo_db_credentials
     cred_file_type: json
 redis:
   addr: clustercfg.staging-central-redis-1.tjcluj.aps1.cache.amazonaws.com
