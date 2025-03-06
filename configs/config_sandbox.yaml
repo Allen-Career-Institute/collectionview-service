@@ -1,20 +1,13 @@
 server:
   http:
-    addr: 0.0.0.0:8008
+    addr: 0.0.0.0:8001
     timeout: 10000s
   grpc:
-    addr: 0.0.0.0:9009
+    addr: 0.0.0.0:9001
     timeout: 100000s
 data:
   mongo:
-    source: mongodb+srv://allen-staging-staging-cluster-pl-0.xklzc.mongodb.net
-    db_name: collectionview-service
-    max_pool_size: 20
-    min_pool_size: 5
-    max_conn_idle_time: 30
-    timeout: 60
-    is_connection_pool_enabled: true
-    cred_file_location: /mnt/secrets-store/mongo_db_credentials
-    cred_file_type: json
-
+    cred_file_location: /Users/shivanshmani/Desktop/allen/collectionview-service/configs/mongo_db_credentials.log
+    connection: mongodb://root:N%3AakESjF%2Fm%2C3@10.1.54.42:27017/?authMechanism=SCRAM-SHA-1&directConnection=true
+    timeout: 6000
 

@@ -8,6 +8,7 @@ package main
 
 import (
 	"collectionview-service/internal/biz"
+	"collectionview-service/internal/cache"
 	"collectionview-service/internal/conf"
 	"collectionview-service/internal/mongo"
 	"collectionview-service/internal/server"
@@ -31,7 +32,9 @@ func wireApp(confServer *conf.Server, data *conf.Data, logger log.Logger, redis 
 	}
 	mongoCollectionInterface := mongo.NewMongoCollectionImpl(mongoData, helper)
 	collectionBizHandler := biz.NewCollectionBizHandler(mongoCollectionInterface, logger)
-	contentViewService := service.NewContentViewService(collectionBizHandler, mongoCollectionInterface)
+	redisStore := cache.NewRedisStore(redis)
+	cacheRepository := cache.NewCacheImpl(redisStore)
+	contentViewService := service.NewContentViewService(collectionBizHandler, mongoCollectionInterface, cacheRepository)
 	grpcServer := server.NewGRPCServer(confServer, contentViewService, logger)
 	httpServer := server.NewHTTPServer(confServer, contentViewService, logger)
 	app := newApp(logger, grpcServer, httpServer)

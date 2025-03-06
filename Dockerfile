@@ -7,9 +7,6 @@ ARG GIT_TOKEN
 ENV GOPRIVATE=github.com/Allen-Career-Institute/*
 ENV GOSUMDB=off
 
-COPY . /src
-WORKDIR /src
-
 RUN apt-get update && apt-get install git -y
 RUN git config --global url."https://$GIT_TOKEN:@github.com/".insteadOf "https://github.com/"
 

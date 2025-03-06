@@ -12,15 +12,18 @@ server:
     shared_write_buffer: true
 data:
   mongo:
-    connection: mongodb+srv://allen-staging-staging-cluster-pl-0.xklzc.mongodb.net
+    connection: mongodb+srv://common-mongo.allen-internal-stage.in/?tls=false
     db_name: collectionview_db
     max_pool_size: 20
     min_pool_size: 5
     max_conn_idle_time: 30
     timeout: 6000
     is_connection_pool_enabled: true
-    cred_file_location: /mnt/secrets-store/mongo_db_credentials
+    cred_file_location: /mnt/secrets-store/mongo_db_creds
     cred_file_type: json
-
+redis:
+  addr: clustercfg.staging-central-redis-1.tjcluj.aps1.cache.amazonaws.com
+  timeout: 6000
+  cred_file_location: /mnt/secrets-store/redis_credentials
 
 
