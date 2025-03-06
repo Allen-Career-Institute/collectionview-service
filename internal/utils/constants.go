@@ -4,8 +4,8 @@ import "time"
 
 const (
 	MongoErrorTag         = "MONGO_ERROR"
-	Databasename          = "collection-view"
-	LibCollection         = "collection-repo"
+	Databasename          = "collectionview_db"
+	LibCollection         = "collectionview"
 	ReelCollection        = "shorts"
 	TTL                   = 36 * time.Hour
 	defaultSize           = 21
