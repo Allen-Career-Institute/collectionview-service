@@ -193,7 +193,7 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 // fetchVideos fetches videos from MongoDB based on a filter and limit
 func (s *ContentViewService) fetchVideos(ctx context.Context, filter bson.M, limit int64) ([]ReelData, error) {
 	opts := options.Find().SetLimit(limit)
-	cursor, err := s.mongoCollection.List(ctx, filter, utils.Databasename, utils.ReelCollection, opts)
+	cursor, err := s.mongoCollection.List(ctx, filter, utils.Databasename, utils.LibCollection, opts)
 	if err != nil {
 		return nil, err
 	}
