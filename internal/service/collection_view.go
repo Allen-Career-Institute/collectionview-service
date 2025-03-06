@@ -217,6 +217,8 @@ func (s *ContentViewService) prepareResponse(ctx context.Context, videos []ReelD
 			Url:      video.URL,
 			Title:    video.Title,
 			Subtitle: video.Subtitle,
+			SubjectId: video.SubjectID,
+			TopicId:   video.TopicID,
 		}
 		watchedReels[video.VideoID] = struct{}{}
 	}
