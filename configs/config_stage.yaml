@@ -22,7 +22,7 @@ data:
     cred_file_location: /mnt/secrets-store/mongo_db_credentials
     cred_file_type: json
 redis:
-  addr: clustercfg.staging-central-redis-1.tjcluj.aps1.cache.amazonaws.com
+  addr: clustercfg.staging-central-redis-1.tjcluj.aps1.cache.amazonaws.com:6379
   timeout: 6000
   cred_file_location: /mnt/secrets-store/redis_credentials
 
