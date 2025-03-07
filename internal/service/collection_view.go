@@ -6,6 +6,7 @@ import (
 	"collectionview-service/internal/mongo"
 	"collectionview-service/internal/utils"
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -207,14 +208,25 @@ func (s *ContentViewService) fetchVideos(ctx context.Context, filter bson.M, lim
 	return videos, nil
 }
 
+func generateRandomHash() string {
+	bytes := make([]byte, 4) // Generates a 4-byte random hash
+	_, err := rand.Read(bytes)
+	if err != nil {
+		fmt.Println("Error generating random hash:", err)
+		return ""
+	}
+	return hex.EncodeToString(bytes)
+}
+
 // prepareResponse prepares the final response and updates cache
 func (s *ContentViewService) prepareResponse(ctx context.Context, videos []ReelData, watchedReels map[string]struct{}, cacheKey string) (*pbrs.GetReelCollectionResponse, error) {
 	response := &pbrs.GetReelCollectionResponse{
 		Reels: make([]*pbrs.ReelData, len(videos)),
 	}
+	randomHash := generateRandomHash()
 	for i, video := range videos {
 		response.Reels[i] = &pbrs.ReelData{
-			Id:        video.VideoID,
+			Id:        randomHash + "_" + video.VideoID,
 			Url:       video.URL,
 			Title:     video.Title,
 			Subtitle:  video.Subtitle,
