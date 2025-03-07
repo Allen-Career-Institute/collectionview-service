@@ -131,10 +131,12 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 	const requiredCount = 5
 	var allVideos []ReelData
 	userID := req.UserId
+	log.Infof("GetReelCollectionRequest: %v", req)
 	cacheKey := fmt.Sprintf("watched_reels:%s", userID)
-	fmt.Println(cacheKey)
+	log.Infof(cacheKey)
 	// 1. Get already watched reels from cache
 	watchedReelsJSON, err := s.CacheStore.Get(ctx, cacheKey)
+	log.Infof("watchedReelsJSON: %v", watchedReelsJSON)
 	var watchedReels map[string]struct{}
 	if err == nil && watchedReelsJSON != "" {
 		_ = json.Unmarshal([]byte(watchedReelsJSON), &watchedReels)
@@ -142,20 +144,28 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 		watchedReels = make(map[string]struct{})
 	}
 	fmt.Println("watchedReels", watchedReels)
-	// 2. Fetch unwatched videos by Topic
-	topicFilter := bson.M{"topicId": req.TopicId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
-	topicVideos, err := s.fetchVideos(ctx, topicFilter, 30)
-	if err != nil {
-		return nil, err
+
+	var topicVideos []ReelData
+	if req.TopicId != "" {
+		// 2. Fetch unwatched videos by Topic
+		topicFilter := bson.M{"topicId": req.TopicId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
+		log.Infof("topicFilter: %v", topicFilter)
+		topicVideos, err = s.fetchVideos(ctx, topicFilter, 30)
+		log.Infof("topicVideos: %v", topicVideos)
+		if err != nil {
+			return nil, err
+		}
+		if len(topicVideos) >= requiredCount {
+			return s.prepareResponse(ctx, topicVideos[:requiredCount], watchedReels, cacheKey)
+		}
 	}
-	if len(topicVideos) >= requiredCount {
-		return s.prepareResponse(ctx, topicVideos[:requiredCount], watchedReels, cacheKey)
-	}
+
 	allVideos = append(allVideos, topicVideos...)
 
 	// 3. Fallback to Subject filter if not enough
-	if len(allVideos) < requiredCount {
+	if len(allVideos) < requiredCount && req.SubjectId != "" {
 		subjectFilter := bson.M{"subjectId": req.SubjectId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
+		log.Infof("subjectFilter: %v", subjectFilter)
 		subjectVideos, err := s.fetchVideos(ctx, subjectFilter, 30)
 		if err != nil {
 			return nil, err
@@ -169,7 +179,9 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 	// 4. Fallback to random videos if still not enough
 	if len(allVideos) < requiredCount {
 		randomFilter := bson.M{"videoID": bson.M{"$nin": getKeys(watchedReels)}}
+		log.Infof("randomFilter: %v", randomFilter)
 		randomVideos, err := s.fetchVideos(ctx, randomFilter, 30)
+		log.Infof("randomVideos: %v", randomVideos)
 		if err != nil {
 			return nil, err
 		}
@@ -182,7 +194,9 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 	// 5. If still not enough, fill with random videos
 	if len(allVideos) < requiredCount {
 		needed := requiredCount - len(allVideos)
+		log.Infof("needed: %v", needed)
 		randomFillVideos, err := s.fetchVideos(ctx, bson.M{}, int64(needed))
+		log.Infof("randomFillVideos: %v", randomFillVideos)
 		if err != nil {
 			return nil, err
 		}
