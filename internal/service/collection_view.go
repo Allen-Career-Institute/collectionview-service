@@ -152,6 +152,13 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 		log.Infof("topicFilter: %v", topicFilter)
 		topicVideos, err = s.fetchVideos(ctx, topicFilter, 30)
 		log.Infof("topicVideos: %v", topicVideos)
+		// loop through the topic videos and if url is empty string, remove that video from the list
+		for i := 0; i < len(topicVideos); i++ {
+			if topicVideos[i].URL == "" {
+				topicVideos = append(topicVideos[:i], topicVideos[i+1:]...)
+				i--
+			}
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -167,6 +174,13 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 		subjectFilter := bson.M{"subjectId": req.SubjectId, "videoID": bson.M{"$nin": getKeys(watchedReels)}}
 		log.Infof("subjectFilter: %v", subjectFilter)
 		subjectVideos, err := s.fetchVideos(ctx, subjectFilter, 30)
+		// loop through the topic videos and if url is empty string, remove that video from the list
+		for i := 0; i < len(subjectVideos); i++ {
+			if subjectVideos[i].URL == "" {
+				subjectVideos = append(subjectVideos[:i], subjectVideos[i+1:]...)
+				i--
+			}
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -182,6 +196,13 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 		log.Infof("randomFilter: %v", randomFilter)
 		randomVideos, err := s.fetchVideos(ctx, randomFilter, 30)
 		log.Infof("randomVideos: %v", randomVideos)
+		// loop through the random videos and if url is empty string, remove that video from the list
+		for i := 0; i < len(randomVideos); i++ {
+			if randomVideos[i].URL == "" {
+				randomVideos = append(randomVideos[:i], randomVideos[i+1:]...)
+				i--
+			}
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -209,6 +230,7 @@ func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.Ge
 // fetchVideos fetches videos from MongoDB based on a filter and limit
 func (s *ContentViewService) fetchVideos(ctx context.Context, filter bson.M, limit int64) ([]ReelData, error) {
 	opts := options.Find().SetLimit(limit)
+	filter["url"] = bson.M{"$ne": ""}
 	cursor, err := s.mongoCollection.List(ctx, filter, utils.Databasename, utils.LibCollection, opts)
 	if err != nil {
 		return nil, err
@@ -237,8 +259,8 @@ func (s *ContentViewService) prepareResponse(ctx context.Context, videos []ReelD
 	response := &pbrs.GetReelCollectionResponse{
 		Reels: make([]*pbrs.ReelData, len(videos)),
 	}
-	randomHash := generateRandomHash()
 	for i, video := range videos {
+		randomHash := generateRandomHash()
 		response.Reels[i] = &pbrs.ReelData{
 			Id:        randomHash + "_" + video.VideoID,
 			Url:       video.URL,
