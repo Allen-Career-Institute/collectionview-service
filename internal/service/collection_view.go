@@ -8,6 +8,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
+	"net/http"
+	"time"
+
 	v1 "github.com/Allen-Career-Institute/common-protos/collection_view/v1"
 	pbrq "github.com/Allen-Career-Institute/common-protos/collection_view/v1/request"
 	pbrs "github.com/Allen-Career-Institute/common-protos/collection_view/v1/response"
@@ -17,9 +21,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"math/rand"
-	"net/http"
-	"time"
 )
 
 var ProviderSet = wire.NewSet(NewContentViewService)
@@ -122,6 +123,7 @@ type ReelData struct {
 	URL       string             `bson:"url"`
 	Title     string             `bson:"title"`
 	Subtitle  string             `bson:"subtitle"`
+	Taxonomy  string             `bson:"taxonomy"`
 }
 
 func (s *ContentViewService) GetReelCollection(ctx context.Context, req *pbrq.GetReelCollectionRequest) (*pbrs.GetReelCollectionResponse, error) {
@@ -218,6 +220,7 @@ func (s *ContentViewService) prepareResponse(ctx context.Context, videos []ReelD
 			Subtitle:  video.Subtitle,
 			SubjectId: video.SubjectId,
 			TopicId:   video.TopicId,
+			Taxonomy:  video.Taxonomy,
 		}
 		watchedReels[video.VideoID] = struct{}{}
 	}
